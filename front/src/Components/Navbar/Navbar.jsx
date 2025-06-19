@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { HiMenu, HiX } from "react-icons/hi";
 
 const menuItems = [
   {
@@ -43,6 +44,13 @@ const MenuItem = ({ path, label, onclick }) => {
 };
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [language, setLanguage] = useState("ko");
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-white text-black p-4 shadow-lg z-50">
       <div className="container mx-auto flex justify-between items-center">
@@ -57,9 +65,78 @@ const Navbar = () => {
             ))}
           </ul>
         </div>
+
+        <select
+          value={language}
+          onChange={(e) => {
+            setLanguage(e.target.value);
+          }}
+          className="hidden lg:block px-3 ml-8 border rounded-md bg:white hover:border-blue-500 transition duration-300"
+        >
+          <option value={"ko"}>한국어</option>
+          <option value={"en"}>영어</option>
+        </select>
+
+        <button
+          className="lg:hidden text-2xl"
+          onClick={toggleMenu}
+          aria-label="메뉴"
+        >
+          {isOpen ? <HiX /> : <HiMenu />}
+        </button>
+      </div>
+
+      <div
+        className={`fixed top-0 right-0 h-full w-64 bg-white text-black transform transition-transform duration-300 ease-in-out z-50 ${
+          isOpen ? "translate-x-0" : "translate-x-full"
+        } lg:hidden`}
+      >
+        <div className="p-4">
+          <button
+            className="text-2xl mb-8 float-right"
+            onClick={toggleMenu}
+            aria-label="닫기"
+          >
+            <HiX />
+          </button>
+          <ul className="clear-both space-y-4 pt-8 text-lg">
+            {menuItems.map((item) => (
+              <MenuItem
+                key={item.path}
+                {...item}
+                onclick={() => {
+                  setIsOpen(false);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              />
+            ))}
+          </ul>
+          <select
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            className="mt-6 w-full px-3 py-1 border rounded-md bg-white hover:border-blue-500 transition duration-300"
+          >
+            <option value={"ko"}>한국어</option>
+            <option value={"en"}>영어</option>
+          </select>
+        </div>
       </div>
     </nav>
   );
 };
 
 export default Navbar;
+
+/*
+
+[React.js] map 함수에서 중괄호({}) , 소괄호(())
+
+1. 중괄호
+  - 반드시 반환값이 존재해야 한다. 
+  - 복잡한 로직을 작성할 때 사용
+
+2. 소괄화
+  - jsx를 바로 반환하는 경우에 사용
+  - return 생랼 가능 
+  - 간결한 코드에 사용
+ */
