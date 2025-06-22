@@ -37,7 +37,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 mb-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
           {[
             { number: "1,200+", label: "설치 완료" },
